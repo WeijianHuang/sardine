@@ -20,8 +20,15 @@ public class UserDaoImpl implements UserDaoI {
     }
     @Override
     public void addUser(User user) {
-        getSession().save(user);
-        System.out.println("执行save");
+        try {
+            System.out.println("1111111111111111111111111111");
+            System.out.println( getSession().save(user));
+            System.out.println(user.getName()+"111");
+            System.out.println("执行save");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
     @Override

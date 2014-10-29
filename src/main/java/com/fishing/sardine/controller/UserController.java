@@ -24,7 +24,12 @@ public class UserController {
             user.setId(1);
             user.setName("屌丝");
             user.setPassword("123123");
-            userDaoI.addUser(user);
+            try {
+                userDaoI.addUser(user);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
             return "index";
         }
 
