@@ -1,12 +1,15 @@
 package com.fishing.sardine.controller;
 
-import com.fishing.sardine.entity.User;
 import com.fishing.sardine.service.UserDaoI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by weijian on 2014/10/29.
@@ -17,20 +20,20 @@ public class UserController {
         public UserDaoI userDaoI;
 
         @RequestMapping("/hello")
-        public String hello(@RequestParam(value="name", required=false, defaultValue="World") String name, Model model) {
-            model.addAttribute("name", name);
+        public ModelAndView hello(@RequestParam(value="name", required=false, defaultValue="World") String name) {
+            ModelAndView modelAndView = new ModelAndView();
+            List<String> list = new ArrayList<>();
+            list.add("1");
+            list.add("2");
+            list.add("3");
+            list.add("4");
+            list.add("5");
+            modelAndView.setViewName("index");
+            modelAndView.addObject("list", list);
             System.out.println(name+"-----------------------------");
-            User user = new User();
-            user.setId(1);
-            user.setName("屌丝");
-            user.setPassword("123123");
-            try {
-                userDaoI.addUser(user);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
 
-            return "index";
+
+            return modelAndView;
         }
 
 

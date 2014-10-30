@@ -55,11 +55,14 @@
             <version>${org.springframework.version}</version>
         </dependency>
 
+
+
         <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
+            <artifactId>spring-context-support</artifactId>
             <version>${org.springframework.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-beans</artifactId>
@@ -118,6 +121,25 @@
             <version>1.6.8</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>1.9.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.3.1</version>
+        </dependency>
+
+        <!--Freemarker-->
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>${freemarker.version}</version>
+        </dependency>
+
     </dependencies>
 
 
@@ -125,6 +147,7 @@
         <org.springframework.version>4.0.5.RELEASE</org.springframework.version>
         <mysql.version>5.1.30</mysql.version>
         <org.hibernate.version>4.0.1.Final</org.hibernate.version>
+        <freemarker.version>2.3.20</freemarker.version>
     </properties>
 
 
