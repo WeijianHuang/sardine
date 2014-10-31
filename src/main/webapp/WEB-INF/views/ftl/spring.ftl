@@ -12,7 +12,7 @@
  *
  * To take advantage of these macros, the "exposeSpringMacroHelpers" property
  * of the FreeMarker class needs to be set to "true". This will expose a
- * RequestContext under the name "springMacroRequestContext", as needed by
+ * RequestContext under the username "springMacroRequestContext", as needed by
  * the macros in this library.
  *
  * @author Darren Davison
@@ -93,7 +93,7 @@
  *
  * Exposes a BindStatus object for the given bind path, which can be
  * a bean (e.g. "person") to get global errors, or a bean property
- * (e.g. "person.name") to get field errors. Can be called multiple times
+ * (e.g. "person.username") to get field errors. Can be called multiple times
  * within a form to bind to multiple command objects and/or field names.
  *
  * This macro will participate in the default HTML escape setting for the given
@@ -106,11 +106,11 @@
  * each time this macro is referenced (assuming you import this library in
  * your templates with the namespace 'spring'):
  *
- *   spring.status : a BindStatus instance holding the command object name,
+ *   spring.status : a BindStatus instance holding the command object username,
  *   expression, value, and error messages and codes for the path supplied
  *
  * @param path : the path (string value) of the value required to bind to.
- *   Spring defaults to a command name of "command" but this can be overridden
+ *   Spring defaults to a command username of "command" but this can be overridden
  *   by user config.
  -->
 <#macro bind path>
@@ -151,13 +151,13 @@ kind of variable. This temp value is only used in this macro lib -->
  * Display a form input field of type 'text' and bind it to an attribute
  * of a command or bean.
  *
- * @param path the name of the field to bind to
+ * @param path the username of the field to bind to
  * @param attributes any additional attributes for the element (such as class
  *    or CSS styles or size
  -->
 <#macro formInput path attributes="" fieldType="text">
     <@bind path/>
-<input type="${fieldType}" id="${status.expression?replace('[','')?replace(']','')}" name="${status.expression}"
+<input type="${fieldType}" id="${status.expression?replace('[','')?replace(']','')}" username="${status.expression}"
        value="<#if fieldType!="password">${stringStatusValue}</#if>" ${attributes}<@closeTag/>
 </#macro>
 
@@ -169,7 +169,7 @@ kind of variable. This temp value is only used in this macro lib -->
  * can also be obtained by calling the formInput macro with a 'type' parameter
  * of 'password'.
  *
- * @param path the name of the field to bind to
+ * @param path the username of the field to bind to
  * @param attributes any additional attributes for the element (such as class
  *    or CSS styles or size
  -->
@@ -184,7 +184,7 @@ kind of variable. This temp value is only used in this macro lib -->
  * of a command or bean. This functionality can also be obtained by calling
  * the formInput macro with a 'type' parameter of 'hidden'.
  *
- * @param path the name of the field to bind to
+ * @param path the username of the field to bind to
  * @param attributes any additional attributes for the element (such as class
  *    or CSS styles or size
  -->
@@ -197,14 +197,14 @@ kind of variable. This temp value is only used in this macro lib -->
  *
  * Display a text area and bind it to an attribute of a command or bean.
  *
- * @param path the name of the field to bind to
+ * @param path the username of the field to bind to
  * @param attributes any additional attributes for the element (such as class
  *    or CSS styles or size
  -->
 <#macro formTextarea path attributes="">
     <@bind path/>
 <textarea id="${status.expression?replace('[','')?replace(']','')}"
-          name="${status.expression}" ${attributes}>${stringStatusValue}</textarea>
+          username="${status.expression}" ${attributes}>${stringStatusValue}</textarea>
 </#macro>
 
 <#--
@@ -213,14 +213,14 @@ kind of variable. This temp value is only used in this macro lib -->
  * Show a selectbox (dropdown) input element allowing a single value to be chosen
  * from a list of options.
  *
- * @param path the name of the field to bind to
+ * @param path the username of the field to bind to
  * @param options a map (value=label) of all the available options
  * @param attributes any additional attributes for the element (such as class
  *    or CSS styles or size
 -->
 <#macro formSingleSelect path options attributes="">
     <@bind path/>
-<select id="${status.expression?replace('[','')?replace(']','')}" name="${status.expression}" ${attributes}>
+<select id="${status.expression?replace('[','')?replace(']','')}" username="${status.expression}" ${attributes}>
     <#if options?is_hash>
         <#list options?keys as value>
             <option value="${value?html}"<@checkSelected value/>>${options[value]?html}</option>
@@ -239,7 +239,7 @@ kind of variable. This temp value is only used in this macro lib -->
  * Show a listbox of options allowing the user to make 0 or more choices from
  * the list of options.
  *
- * @param path the name of the field to bind to
+ * @param path the username of the field to bind to
  * @param options a map (value=label) of all the available options
  * @param attributes any additional attributes for the element (such as class
  *    or CSS styles or size
@@ -247,7 +247,7 @@ kind of variable. This temp value is only used in this macro lib -->
 <#macro formMultiSelect path options attributes="">
     <@bind path/>
 <select multiple="multiple" id="${status.expression?replace('[','')?replace(']','')}"
-        name="${status.expression}" ${attributes}>
+        username="${status.expression}" ${attributes}>
     <#list options?keys as value>
         <#assign isSelected = contains(status.actualValue?default([""]), value)>
         <option value="${value?html}"<#if isSelected> selected="selected"</#if>>${options[value]?html}</option>
@@ -260,7 +260,7 @@ kind of variable. This temp value is only used in this macro lib -->
  *
  * Show radio buttons.
  *
- * @param path the name of the field to bind to
+ * @param path the username of the field to bind to
  * @param options a map (value=label) of all the available options
  * @param separator the html tag or other character list that should be used to
  *    separate each option. Typically '&nbsp;' or '<br>'
@@ -271,7 +271,7 @@ kind of variable. This temp value is only used in this macro lib -->
     <@bind path/>
     <#list options?keys as value>
         <#assign id="${status.expression?replace('[','')?replace(']','')}${value_index}">
-            <input type="radio" id="${id}" name="${status.expression}"
+            <input type="radio" id="${id}" username="${status.expression}"
                    value="${value?html}"<#if stringStatusValue == value>
                    checked="checked"</#if> ${attributes}<@closeTag/>
     <label for="${id}">${options[value]?html}</label>${separator}
@@ -283,7 +283,7 @@ kind of variable. This temp value is only used in this macro lib -->
  *
  * Show checkboxes.
  *
- * @param path the name of the field to bind to
+ * @param path the username of the field to bind to
  * @param options a map (value=label) of all the available options
  * @param separator the html tag or other character list that should be used to
  *    separate each option. Typically '&nbsp;' or '<br>'
@@ -295,11 +295,11 @@ kind of variable. This temp value is only used in this macro lib -->
     <#list options?keys as value>
         <#assign id="${status.expression?replace('[','')?replace(']','')}${value_index}">
         <#assign isSelected = contains(status.actualValue?default([""]), value)>
-            <input type="checkbox" id="${id}" name="${status.expression}" value="${value?html}"<#if isSelected>
+            <input type="checkbox" id="${id}" username="${status.expression}" value="${value?html}"<#if isSelected>
                    checked="checked"</#if> ${attributes}<@closeTag/>
     <label for="${id}">${options[value]?html}</label>${separator}
     </#list>
-<input type="hidden" name="_${status.expression}" value="on"/>
+<input type="hidden" username="_${status.expression}" value="on"/>
 </#macro>
 
 <#--
@@ -307,7 +307,7 @@ kind of variable. This temp value is only used in this macro lib -->
  *
  * Show a single checkbox.
  *
- * @param path the name of the field to bind to
+ * @param path the username of the field to bind to
  * @param attributes any additional attributes for the element (such as class
  *    or CSS styles or size
 -->
@@ -315,8 +315,8 @@ kind of variable. This temp value is only used in this macro lib -->
     <@bind path />
     <#assign id="${status.expression?replace('[','')?replace(']','')}">
     <#assign isSelected = status.value?? && status.value?string=="true">
-<input type="hidden" name="_${status.expression}" value="on"/>
-<input type="checkbox" id="${id}" name="${status.expression}"<#if isSelected> checked="checked"</#if> ${attributes}/>
+<input type="hidden" username="_${status.expression}" value="on"/>
+<input type="checkbox" id="${id}" username="${status.expression}"<#if isSelected> checked="checked"</#if> ${attributes}/>
 </#macro>
 
 <#--
@@ -327,7 +327,7 @@ kind of variable. This temp value is only used in this macro lib -->
  *
  * @param separator the html tag or other character list that should be used to
  *    separate each option. Typically '<br>'.
- * @param classOrStyle either the name of a CSS class element (which is defined in
+ * @param classOrStyle either the username of a CSS class element (which is defined in
  *    the template or an external CSS file) or an inline style. If the value passed in here
  *    contains a colon (:) then a 'style=' attribute will be used, else a 'class=' attribute
  *    will be used.

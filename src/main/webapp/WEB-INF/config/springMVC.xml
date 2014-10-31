@@ -1,29 +1,23 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
+
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context-3.0.xsd
-        http://www.springframework.org/schema/tx
-        http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
-        http://www.springframework.org/schema/aop
-        http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+
         http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
 
-    <!-- 开启controller注解,并扫描web包下的控制器类-->
-    <context:component-scan base-package="com.fishing.sardine.controller" use-default-filters="false">
-        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
-        <context:include-filter type="annotation"
-                                expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
-    </context:component-scan>
+
 
     <mvc:annotation-driven/>
-
+    <!--静态资源控制-->
+    <mvc:resources mapping="/resource/**" location="/WEB-INF/resource/"/>
     <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
         <!-- 设置为true以忽略对Accept Header的支持(浏览器不同有可能不同)-->
         <property name="ignoreAcceptHeader" value="true"/>
@@ -77,7 +71,7 @@
     </bean>
 
 
-    <bean  class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix">
             <value>/WEB-INF/views/jsp/</value>
         </property>
@@ -89,97 +83,20 @@
 
     <!--11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111-->
 
-    <!-- 启动自动扫描该包下所有的Bean(例如@Controller) -->
-    <context:component-scan base-package="com.fishing.sardine">
+    <!-- 启动自动扫描该包下所有的Bean(例如@Controller)-->
+    <context:component-scan base-package="com.fishing.sardine.controller" use-default-filters="false">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
         <context:include-filter type="annotation"
                                 expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
     </context:component-scan>
 
+
+
     <!--载入其他XML配置文件
     <import resource="/WEB-INF/config/spring-core-hibernate.xml"/>-->
 
 
-    <!--111111111111111111111111111111111111111111111111111111111111111-->
-
-    <bean id="sessionFactory"
-          class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="hibernateProperties">
-            <props>
-                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
-                <prop key="hibernate.hbm2ddl.auto">update</prop>
-                <prop key="hibernate.show_sql">true</prop>
-                <prop key="hibernate.format_sql">true</prop>
-            </props>
-        </property>
-        <property name="packagesToScan">
-            <list>
-                <value>com.fishing.sardine.entity</value>
-            </list>
-        </property>
-    </bean>
-    <!-- 数据库映射 -->
-    <!--  class="org.apache.tomcat.dbcp.dbcp.BasicDataSource" -->
-    <!--  class="org.springframework.jdbc.datasource.DriverManagerDataSource" -->
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql://127.0.0.1:3306/test"/>
-        <property name="username" value="root"/>
-        <property name="password" value="123456"/>
-    </bean>
 
 
-    <!-- 配置事务异常封装 -->
-    <bean id="persistenceExceptionTranslationPostProcessor"
-          class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
 
-
-    <!--事务管理器配置-->
-    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager"
-          lazy-init="default"
-          autowire="default">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <!--  声明式容器事务管理 ,transaction-manager指定事务管理器为transactionManager -->
-    <tx:advice id="txAdvice" transaction-manager="transactionManager">
-        <tx:attributes>
-
-            <tx:method name="add*" propagation="REQUIRED"/>
-            <tx:method name="save*" propagation="REQUIRED"/>
-            <tx:method name="update*" propagation="REQUIRED"/>
-            <tx:method name="modify*" propagation="REQUIRED"/>
-            <tx:method name="edit*" propagation="REQUIRED"/>
-            <tx:method name="delete*" propagation="REQUIRED"/>
-            <tx:method name="remove*" propagation="REQUIRED"/>
-            <tx:method name="repair" propagation="REQUIRED"/>
-            <tx:method name="delAndRepair" propagation="REQUIRED"/>
-            <tx:method name="switch*" propagation="REQUIRED"/>
-            <tx:method name="process*" propagation="REQUIRED"/>
-
-            <tx:method name="get*" propagation="REQUIRED" read-only="true"/>
-            <tx:method name="find*" propagation="REQUIRED" read-only="true"/>
-            <tx:method name="load*" propagation="REQUIRED" read-only="true"/>
-            <tx:method name="search*" propagation="REQUIRED" read-only="true"/>
-            <tx:method name="datagrid*" propagation="REQUIRED" read-only="true"/>
-
-            <tx:method name="doReweight" propagation="REQUIRES_NEW"/>
-            <tx:method name="doClear*" propagation="REQUIRES_NEW"/>
-            <tx:method name="doSend*" propagation="REQUIRES_NEW"/>
-            <tx:method name="doBatchSave*" propagation="REQUIRES_NEW"/>
-            <!--hibernate4必须配置为开启事务 否则 getCurrentSession()获取不到-->
-            <tx:method name="count*" propagation="REQUIRED" read-only="true"/>
-            <tx:method name="list*" propagation="REQUIRED" read-only="true"/>
-            <tx:method name="*" propagation="REQUIRED"/>
-            <!--编译标记-->
-            <!--silverfox.config.spring.resources.tx:method-->
-        </tx:attributes>
-    </tx:advice>
-
-    <aop:config expose-proxy="true">
-        <!-- 只对业务逻辑层实施事务 -->
-        <aop:pointcut id="txPointcut" expression="execution(* com.fishing.sardine..*.*(..))"/>
-        <!-- Advisor定义，切入点和通知分别为txPointcut、txAdvice -->
-        <aop:advisor pointcut-ref="txPointcut" advice-ref="txAdvice"/>
-    </aop:config>
 </beans>
