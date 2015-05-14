@@ -1,4 +1,4 @@
-package com.fishing.sardine.until;
+package com.sardine.base.until;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

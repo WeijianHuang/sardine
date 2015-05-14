@@ -1,4 +1,4 @@
-package com.fishing.sardine.entity;
+package com.sardine.base.entity;
 
 import org.springframework.security.core.GrantedAuthority;
 

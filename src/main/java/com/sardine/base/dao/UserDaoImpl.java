@@ -1,7 +1,7 @@
-package com.fishing.sardine.dao;
+package com.sardine.base.dao;
 
-import com.fishing.sardine.entity.User;
-import com.fishing.sardine.service.UserServiceI;
+import com.sardine.base.entity.User;
+import com.sardine.base.service.UserServiceI;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

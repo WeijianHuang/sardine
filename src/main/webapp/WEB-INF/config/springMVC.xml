@@ -84,7 +84,7 @@
     <!--11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111-->
 
     <!-- 启动自动扫描该包下所有的Bean(例如@Controller)-->
-    <context:component-scan base-package="com.fishing.sardine.controller" use-default-filters="false">
+    <context:component-scan base-package="com.sardine.*.controller" use-default-filters="false">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
         <context:include-filter type="annotation"
                                 expression="org.springframework.web.bind.annotation.ControllerAdvice"/>

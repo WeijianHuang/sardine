@@ -1,12 +1,10 @@
-package com.fishing.sardine.service;
+package com.sardine.base.service;
 
 import java.util.*;
 
-import com.fishing.sardine.entity.User;
-import com.fishing.sardine.until.ApplicationContextUtils;
+import com.sardine.base.entity.User;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

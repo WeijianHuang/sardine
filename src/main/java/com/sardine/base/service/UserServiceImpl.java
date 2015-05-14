@@ -1,7 +1,7 @@
-package com.fishing.sardine.service;
+package com.sardine.base.service;
 
-import com.fishing.sardine.dao.UserDaoI;
-import com.fishing.sardine.entity.User;
+import com.sardine.base.dao.UserDaoI;
+import com.sardine.base.entity.User;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;

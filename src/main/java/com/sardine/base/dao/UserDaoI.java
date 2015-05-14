@@ -1,6 +1,6 @@
-package com.fishing.sardine.dao;
+package com.sardine.base.dao;
 
-import com.fishing.sardine.entity.User;
+import com.sardine.base.entity.User;
 
 /**
  * Created by weijian on 2014/10/29.

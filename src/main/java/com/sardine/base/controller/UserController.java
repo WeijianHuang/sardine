@@ -1,12 +1,9 @@
-package com.fishing.sardine.controller;
+package com.sardine.base.controller;
 
-import com.fishing.sardine.entity.User;
-import com.fishing.sardine.dao.UserDaoI;
-import com.fishing.sardine.service.UserServiceI;
+import com.sardine.base.entity.User;
+import com.sardine.base.service.UserServiceI;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
