@@ -1,16 +1,10 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
-
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
-
        xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-        http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context-3.0.xsd
-
-        http://www.springframework.org/schema/mvc
-        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
 
 
@@ -18,23 +12,34 @@
     <mvc:annotation-driven/>
     <!--静态资源控制-->
     <mvc:resources mapping="/resource/**" location="/WEB-INF/resource/"/>
-    <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
-        <!-- 设置为true以忽略对Accept Header的支持(浏览器不同有可能不同)-->
-        <property name="ignoreAcceptHeader" value="true"/>
-
-        <!-- 在没有扩展名时即: "/user/1" 时的默认展现形式 -->
-        <property name="defaultContentType" value="text/html"/>
-
-        <!-- 扩展名至mimeType的映射,即 /user.json => application/json -->
+    <!--内容协商管理器
+      检查顺序：
+        1.路径扩展名(url.xxx)
+        2.Parameter（format=xxx）
+        3.Accept Header
+        -->
+    <bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+        <!--扩展名映射开关-->
+        <property name="favorPathExtension" value="true"/>
+        <!--格式参数开关-->
+        <property name="favorParameter" value="true"/>
+        <!--格式参数名称指定-->
+        <property name="parameterName" value="format"/>
+        <!--Accept Header开关-->
+        <property name="ignoreAcceptHeader" value="false"/>
+        <!--扩展名映射配置-->
         <property name="mediaTypes">
-            <map>
-                <entry key="json" value="application/json"/>
-                <entry key="xml" value="application/xml"/>
-                <entry key="htm" value="text/html"/>
-                <entry key="do" value="text/html"/>
-                <entry key="qd" value="text/html"/>
-            </map>
+            <value>
+                json=application/json
+                xml=application/xml
+                html=text/html
+            </value>
         </property>
+        <!--默认的格式参数-->
+        <property name="defaultContentType" value="text/html"/>
+    </bean>
+    <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+        <property name="contentNegotiationManager" ref="contentNegotiationManager"/>
         <property name="defaultViews">
             <list>
                 <bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"/>
@@ -72,16 +77,10 @@
 
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix">
-            <value>/WEB-INF/views/jsp/</value>
-        </property>
-        <property name="suffix">
-            <value>.jsp</value>
-        </property>
+        <property name="prefix" value="/WEB-INF/views/jsp/"/>
+        <property name="suffix" value=".jsp"/>
         <property name="order" value="2"/>
     </bean>
-
-    <!--11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111-->
 
     <!-- 启动自动扫描该包下所有的Bean(例如@Controller)-->
     <context:component-scan base-package="com.sardine.*.controller" use-default-filters="false">
@@ -90,13 +89,7 @@
                                 expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
     </context:component-scan>
 
-
-
     <!--载入其他XML配置文件
     <import resource="/WEB-INF/config/spring-core-hibernate.xml"/>-->
-
-
-
-
 
 </beans>

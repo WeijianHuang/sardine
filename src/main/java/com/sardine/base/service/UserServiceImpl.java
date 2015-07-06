@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 
 /**
+ * 用户服务层实现类，对用户进行逻辑处理
  * Created by weijian on 2014/10/30.
  */
 @Service

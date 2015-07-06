@@ -6,12 +6,13 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 /**
+ * 用户dao层实现类 主要与数据库 的增删改查交互
  * Created by weijian on 2014/10/29.
  */
-@Service
+@Repository
 public class UserDaoImpl implements UserDaoI {
 
     @Autowired

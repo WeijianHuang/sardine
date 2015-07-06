@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 /**
+ * 客户详细信息服务类
  * Created by weijian on 2014/10/30.
  */
 @Service

@@ -13,13 +13,12 @@
     <security:global-method-security pre-post-annotations="enabled" proxy-target-class="true"/>
     <!--spring-security-->
     <security:http auto-config="true" use-expressions="true">
+        <!--全局拦截-->
+        <!--<security:intercept-url pattern="/*" access="hasRole('ROLE_USER')"/>-->
         <!--允许所有人访问-->
         <security:intercept-url pattern="/resource/**" access="permitAll" />
         <!--允许ROLE_ADMIN权限访问-->
-        <security:intercept-url pattern="/**" access="hasRole('ROLE_ADMIN')" />
-
-
-
+        <!--<security:intercept-url pattern="/WEB-INF/resource/static/**" access="hasRole('ROLE_ADMIN')" />-->
 
         <!-- login-page:默认指定的登录页面. authentication-failure-url:出错后跳转页面. default-target-url:成功登陆后跳转页面 -->
         <security:form-login login-page="/resource/static/login.html" authentication-failure-url="/resource/static/login_failure.html"

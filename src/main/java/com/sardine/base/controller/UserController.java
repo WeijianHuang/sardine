@@ -17,6 +17,7 @@ import java.util.Set;
 
 
 /**
+ * 用户模块 view控制层
  * Created by weijian on 2014/10/29.
  */
 @Controller
@@ -35,7 +36,8 @@ public class UserController {
         list.add("2");
         list.add("3");
         list.add("4");
-        list.add("5");try {
+        list.add("5");
+        try {
             User user = new User();
             System.out.println(userServiceI);
             System.out.println( userServiceI.test("cdcsdcdscds")+"---------------------------");
