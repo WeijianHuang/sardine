@@ -11,7 +11,7 @@
 
     <mvc:annotation-driven/>
     <!--静态资源控制-->
-    <mvc:resources mapping="/resource/**" location="/WEB-INF/resource/"/>
+    <mvc:resources mapping="/resource/**" location="/resource/"/>
     <!--内容协商管理器
       检查顺序：
         1.路径扩展名(url.xxx)
@@ -83,7 +83,7 @@
     </bean>
 
     <!-- 启动自动扫描该包下所有的Bean(例如@Controller)-->
-    <context:component-scan base-package="com.sardine.*.controller" use-default-filters="false">
+    <context:component-scan base-package="com.sardine.**.controller" use-default-filters="false">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
         <context:include-filter type="annotation"
                                 expression="org.springframework.web.bind.annotation.ControllerAdvice"/>

@@ -16,7 +16,7 @@
         <!--全局拦截-->
         <!--<security:intercept-url pattern="/*" access="hasRole('ROLE_USER')"/>-->
         <!--允许所有人访问-->
-        <security:intercept-url pattern="/resource/**" access="permitAll" />
+        <!--<security:intercept-url pattern="/resource/**" access="permitAll" />-->
         <!--允许ROLE_ADMIN权限访问-->
         <!--<security:intercept-url pattern="/WEB-INF/resource/static/**" access="hasRole('ROLE_ADMIN')" />-->
 
@@ -47,7 +47,7 @@
     </security:authentication-manager>
     <!-- 对密码进行MD5编码 -->
     <bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.Md5PasswordEncoder" />
-    <bean id="customUserDetailsService" class="com.sardine.base.service.CustomerUserDetailsService" />
+    <bean id="customUserDetailsService" class="com.sardine.base.user.service.CustomerUserDetailsService"/>
 
 
 
